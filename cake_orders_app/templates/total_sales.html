@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Total Sales</h2>
+<p>Total Amount: ${{ "%.2f"|format(total) }}</p>
+{% endblock %}

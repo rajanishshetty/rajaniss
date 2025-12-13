@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All Orders</h2>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Order Date</th>
+        <th>Customer Address</th>
+        <th>Phone Number</th>
+        <th>Order Details</th>
+        <th>Order Amount</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order[0] }}</td>
+        <td>{{ order[1] }}</td>
+        <td>{{ order[2] }}</td>
+        <td>{{ order[3] }}</td>
+        <td>{{ order[4] }}</td>
+        <td>${{ "%.2f"|format(order[5]) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
