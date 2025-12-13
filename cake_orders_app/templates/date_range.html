@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Orders by Date Range</h2>
+<form method="post">
+    Start Date: <input type="date" name="start_date" required><br><br>
+    End Date: <input type="date" name="end_date" required><br><br>
+    <input type="submit" value="Get Orders">
+</form>
+{% endblock %}

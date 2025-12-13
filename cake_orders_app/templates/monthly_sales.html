@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Monthly Sales Summary</h2>
+<table border="1">
+    <tr>
+        <th>Month</th>
+        <th>Total Sales</th>
+    </tr>
+    {% for sale in sales %}
+    <tr>
+        <td>{{ sale[0] }}</td>
+        <td>${{ "%.2f"|format(sale[1]) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
