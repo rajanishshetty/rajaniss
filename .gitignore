@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Database (contains personal data — upload manually to server)
+*.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
