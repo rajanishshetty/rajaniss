@@ -1,8 +1,10 @@
 import sqlite3
+import os
 from flask import Flask, render_template, request, redirect, url_for, Response
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'gourmets-crafts-secret-key-change-in-prod')
 
 # Initialize database
 def init_db():
@@ -131,4 +133,5 @@ def export_csv():
     return Response(output, mimetype='text/csv', headers={'Content-Disposition': 'attachment; filename=orders.csv'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug = os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
+    app.run(debug=debug, host='0.0.0.0', port=int(os.environ.get('PORT', 5001)))

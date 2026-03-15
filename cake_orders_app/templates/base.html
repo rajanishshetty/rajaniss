@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sweet Home Bakery</title>
+    <title>Gourmets-Crafts</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -399,10 +399,10 @@
 <header>
     <div class="header-inner">
         <a class="brand" href="/">
-            <span class="brand-icon">🎂</span>
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Gourmets-Crafts" style="height:54px; width:54px; border-radius:50%; object-fit:cover;">
             <span class="brand-text">
-                <span class="brand-name">Sweet Home Bakery</span>
-                <span class="brand-tagline">Handcrafted with love</span>
+                <span class="brand-name">Gourmets-Crafts</span>
+                <span class="brand-tagline">pâtisserie</span>
             </span>
         </a>
         <nav>
@@ -427,7 +427,7 @@
 </main>
 
 <footer>
-    <p>Made with <span>♥</span> &nbsp;·&nbsp; Sweet Home Bakery &nbsp;·&nbsp; {{ now.year if now else '2026' }}</p>
+    <p>Made with <span>♥</span> &nbsp;·&nbsp; Gourmets-Crafts &nbsp;·&nbsp; {{ now.year if now else '2026' }}</p>
 </footer>
 
 </body>
