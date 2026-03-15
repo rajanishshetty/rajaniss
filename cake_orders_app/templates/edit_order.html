@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card" style="max-width:620px; margin:0 auto;">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:0.4rem;">
+        <div>
+            <h2 class="page-title">Edit Order #{{ order[0] }}</h2>
+            <p class="page-subtitle">Update the details for this order.</p>
+        </div>
+        <span class="badge badge-{{ order[6] }}" style="align-self:center; font-size:0.8rem;">{{ order[6] }}</span>
+    </div>
+    <hr class="divider">
+
+    <form method="post" action="/edit_order/{{ order[0] }}">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="order_date">Order Date</label>
+                <input type="date" id="order_date" name="order_date" value="{{ order[1] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="order_amount">Order Amount ($)</label>
+                <input type="number" id="order_amount" name="order_amount" step="0.01" min="0" value="{{ order[5] }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" id="phone_number" name="phone_number" value="{{ order[3] }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="customer_address">Customer Address</label>
+            <textarea id="customer_address" name="customer_address" required>{{ order[2] }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="order_details">Order Details</label>
+            <textarea id="order_details" name="order_details" style="min-height:110px;" required>{{ order[4] }}</textarea>
+        </div>
+
+        <div style="display:flex; gap:0.8rem; align-items:center; margin-top:1.5rem; flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary">💾 &nbsp;Save Changes</button>
+            <a href="/orders" class="btn btn-outline">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

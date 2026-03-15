@@ -383,6 +383,58 @@
 
         footer span { color: var(--rose); }
 
+        /* ── Status badges ── */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .badge-pending   { background:#fff8e1; color:#b45309; border:1.5px solid #f59e0b; }
+        .badge-complete  { background:#ecfdf5; color:#065f46; border:1.5px solid #10b981; }
+        .badge-cancelled { background:#fef2f2; color:#991b1b; border:1.5px solid #ef4444; }
+
+        /* ── Action buttons (small, in-table) ── */
+        .btn-action {
+            display: inline-block;
+            padding: 0.28rem 0.55rem;
+            border-radius: 6px;
+            font-size: 0.71rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            line-height: 1.4;
+            transition: opacity 0.15s;
+            white-space: nowrap;
+            font-family: 'Lato', sans-serif;
+        }
+        .btn-action:hover  { opacity: 0.78; }
+        .btn-edit          { background:var(--gold-light); color:var(--chocolate); border:1.5px solid var(--gold); }
+        .btn-complete      { background:#ecfdf5; color:#065f46; border:1.5px solid #10b981; }
+        .btn-cancel        { background:#fef2f2; color:#991b1b; border:1.5px solid #ef4444; }
+        .btn-whatsapp      { background:#dcfce7; color:#15803d; border:1.5px solid #22c55e; }
+        .btn-sms           { background:#eff6ff; color:#1d4ed8; border:1.5px solid #60a5fa; }
+
+        /* ── Status filter tabs ── */
+        .status-tabs { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+        .status-tab {
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--brown-mid);
+            border: 1.5px solid var(--gold-light);
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .status-tab:hover  { background:var(--blush); border-color:var(--gold); }
+        .status-tab.active { background:var(--rose); color:var(--white); border-color:var(--rose); }
+
         /* ── Responsive ── */
         @media (max-width: 640px) {
             .header-inner { height: auto; padding: 0.8rem 0; flex-direction: column; gap: 0.6rem; }

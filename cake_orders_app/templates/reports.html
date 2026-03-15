@@ -3,10 +3,34 @@
 
 <div class="card">
     <h2 class="page-title">Reports</h2>
-    <p class="page-subtitle">Explore your bakery's performance and export data.</p>
+    <p class="page-subtitle">Manage orders and explore your bakery's performance.</p>
     <hr class="divider">
 
     <div class="report-grid">
+
+        <a href="/orders" class="report-card" style="border-color:var(--rose);">
+            <span class="report-card-icon">📋</span>
+            <span class="report-card-title">Manage Orders</span>
+            <span class="report-card-desc">View, edit & filter all orders</span>
+        </a>
+
+        <a href="/orders?status=pending" class="report-card">
+            <span class="report-card-icon">⏳</span>
+            <span class="report-card-title">Pending Orders</span>
+            <span class="report-card-desc">Orders awaiting fulfillment</span>
+        </a>
+
+        <a href="/orders?status=complete" class="report-card">
+            <span class="report-card-icon">✅</span>
+            <span class="report-card-title">Completed Orders</span>
+            <span class="report-card-desc">Successfully fulfilled orders</span>
+        </a>
+
+        <a href="/orders?status=cancelled" class="report-card">
+            <span class="report-card-icon">❌</span>
+            <span class="report-card-title">Cancelled Orders</span>
+            <span class="report-card-desc">Orders marked as cancelled</span>
+        </a>
 
         <a href="/total_sales" class="report-card">
             <span class="report-card-icon">💰</span>

@@ -5,11 +5,19 @@
     <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:0.4rem;">
         <div>
             <h2 class="page-title">All Orders</h2>
-            <p class="page-subtitle">A complete record of every cake order.</p>
+            <p class="page-subtitle">View, edit and manage every cake order.</p>
         </div>
         <a href="/add_order" class="btn btn-primary" style="align-self:center;">+ New Order</a>
     </div>
     <hr class="divider">
+
+    <!-- Status filter tabs -->
+    <div class="status-tabs">
+        <a href="/orders" class="status-tab {% if not status_filter %}active{% endif %}">All</a>
+        <a href="/orders?status=pending"   class="status-tab {% if status_filter == 'pending' %}active{% endif %}">⏳ Pending</a>
+        <a href="/orders?status=complete"  class="status-tab {% if status_filter == 'complete' %}active{% endif %}">✅ Complete</a>
+        <a href="/orders?status=cancelled" class="status-tab {% if status_filter == 'cancelled' %}active{% endif %}">❌ Cancelled</a>
+    </div>
 
     {% if orders %}
     <div class="table-wrap">
@@ -22,6 +30,8 @@
                     <th>Phone</th>
                     <th>Details</th>
                     <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +43,34 @@
                     <td style="white-space:nowrap;">{{ order[3] }}</td>
                     <td>{{ order[4] }}</td>
                     <td class="amount">${{ "%.2f"|format(order[5]) }}</td>
+                    <td><span class="badge badge-{{ order[6] }}">{{ order[6] }}</span></td>
+                    <td>
+                        {% set wa_msg %}Order Summary - Gourmets-Crafts
+Order #: {{ order[0] }}
+Date: {{ order[1] }}
+Customer: {{ order[2] }}
+Phone: {{ order[3] }}
+Details: {{ order[4] }}
+Amount: ${{ "%.2f"|format(order[5]) }}
+Status: {{ order[6] }}
+--------------------------------
+Bakery: 140 Rue des Hirondelles
+La Prairie, QC J5R5K4
+Tel: 438-995-5564{% endset %}
+                        <div style="display:flex; gap:0.3rem; flex-wrap:wrap; align-items:center;">
+                            <a href="/edit_order/{{ order[0] }}" class="btn-action btn-edit">✏️ Edit</a>
+                            <a href="https://wa.me/{{ order[3] }}?text={{ wa_msg | urlencode }}" target="_blank" class="btn-action btn-whatsapp">💬 WA</a>
+                            <a href="sms:{{ order[3] }}?body={{ wa_msg | urlencode }}" class="btn-action btn-sms">📱 SMS</a>
+                            {% if order[6] == 'pending' %}
+                            <form method="post" action="/complete_order/{{ order[0] }}" style="display:inline;" onsubmit="return confirm('Mark order #{{ order[0] }} as complete?')">
+                                <button type="submit" class="btn-action btn-complete">✅ Done</button>
+                            </form>
+                            <form method="post" action="/cancel_order/{{ order[0] }}" style="display:inline;" onsubmit="return confirm('Cancel order #{{ order[0] }}?')">
+                                <button type="submit" class="btn-action btn-cancel">❌ Cancel</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -41,7 +79,7 @@
     {% else %}
     <div style="text-align:center; padding:3rem 1rem; color:var(--brown-mid);">
         <div style="font-size:3rem; margin-bottom:1rem;">🎂</div>
-        <p style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.5rem;">No orders yet</p>
+        <p style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.5rem;">No orders found</p>
         <p style="font-size:0.9rem; font-weight:300;">
             <a href="/add_order" style="color:var(--rose); font-weight:700;">Add your first order</a> to get started.
         </p>
