@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .cal-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+
+    /* ── Top bar ── */
+    .cal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+        border-bottom: 2px solid var(--gold-light);
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+    .cal-nav { display: flex; align-items: center; gap: 0.5rem; }
+    .cal-nav-btn {
+        background: var(--blush);
+        border: 1.5px solid var(--gold-light);
+        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        font-size: 1rem;
+        cursor: pointer;
+        color: var(--chocolate);
+        text-decoration: none;
+        transition: background 0.15s;
+        font-weight: 700;
+    }
+    .cal-nav-btn:hover { background: var(--gold-light); }
+    .cal-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--chocolate);
+        min-width: 220px;
+        text-align: center;
+    }
+    .cal-today-btn {
+        background: var(--rose);
+        color: var(--white);
+        border: none;
+        border-radius: 20px;
+        padding: 0.4rem 1rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .cal-today-btn:hover { background: var(--rose-dark); }
+
+    /* ── Day-of-week header ── */
+    .cal-dow-row {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        border-bottom: 1px solid var(--blush);
+        background: var(--cream);
+    }
+    .cal-dow {
+        padding: 0.5rem 0;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--brown-mid);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    /* ── Grid ── */
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+    .cal-cell {
+        min-height: 110px;
+        border-right: 1px solid var(--blush);
+        border-bottom: 1px solid var(--blush);
+        padding: 0.4rem 0.5rem;
+        vertical-align: top;
+        position: relative;
+        background: var(--white);
+        transition: background 0.12s;
+    }
+    .cal-cell:nth-child(7n) { border-right: none; }
+    .cal-cell.empty { background: var(--cream); }
+    .cal-cell.today { background: #fff8f5; }
+
+    .cal-day-num {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--brown-mid);
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-bottom: 0.3rem;
+    }
+    .cal-cell.today .cal-day-num {
+        background: var(--rose);
+        color: var(--white);
+    }
+
+    /* ── Order pills ── */
+    .cal-order-pill {
+        display: block;
+        background: #4a90d9;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border-radius: 4px;
+        padding: 0.18rem 0.45rem;
+        margin-bottom: 0.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-decoration: none;
+        max-width: 100%;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+    .cal-order-pill:hover { opacity: 0.82; }
+    .cal-order-pill.status-complete  { background: #10b981; }
+    .cal-order-pill.status-cancelled { background: #9ca3af; }
+    .cal-order-pill.status-pending   { background: #4a90d9; }
+
+    .cal-more {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--brown-mid);
+        background: #e5e7eb;
+        border-radius: 4px;
+        padding: 0.15rem 0.4rem;
+        display: inline-block;
+        margin-top: 0.1rem;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .cal-more:hover { background: var(--gold-light); }
+
+    /* ── Day detail modal ── */
+    .modal-backdrop {
+        display: none;
+        position: fixed; inset: 0;
+        background: rgba(74,44,26,0.35);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: 0 20px 60px rgba(74,44,26,0.25);
+        padding: 1.8rem 2rem;
+        max-width: 480px;
+        width: 92%;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+    }
+    .modal-close {
+        position: absolute;
+        top: 1rem; right: 1rem;
+        background: none; border: none;
+        font-size: 1.3rem; cursor: pointer;
+        color: var(--brown-mid);
+    }
+    .modal-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--chocolate);
+        margin-bottom: 1rem;
+    }
+    .modal-order-row {
+        border-bottom: 1px solid var(--blush);
+        padding: 0.7rem 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+    .modal-order-row:last-child { border-bottom: none; }
+    .modal-order-name { font-weight: 700; color: var(--chocolate); font-size: 0.9rem; }
+    .modal-order-detail { font-size: 0.78rem; color: var(--brown-mid); margin-top: 0.15rem; }
+    .modal-order-amount { font-weight: 700; color: var(--rose-dark); white-space: nowrap; font-size: 0.9rem; }
+
+    @media (max-width: 640px) {
+        .cal-cell { min-height: 70px; padding: 0.25rem; }
+        .cal-day-num { font-size: 0.75rem; width: 22px; height: 22px; }
+        .cal-order-pill { font-size: 0.62rem; padding: 0.12rem 0.3rem; }
+        .cal-title { font-size: 1rem; min-width: 150px; }
+    }
+</style>
+
+<div style="margin-bottom:1rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+    <div>
+        <h2 class="page-title">Order Calendar</h2>
+        <p class="page-subtitle">Monthly view of all cake orders.</p>
+    </div>
+    <a href="/reports" class="btn btn-outline">← Reports</a>
+</div>
+
+<div class="cal-wrap">
+    <!-- Header: nav + month title + Today -->
+    <div class="cal-header">
+        <div class="cal-nav">
+            <a class="cal-nav-btn" href="/calendar?year={{ prev_year }}&month={{ prev_month }}">&#8249;</a>
+            <span class="cal-title">{{ month_name }} {{ year }}</span>
+            <a class="cal-nav-btn" href="/calendar?year={{ next_year }}&month={{ next_month }}">&#8250;</a>
+        </div>
+        <a class="cal-today-btn" href="/calendar">TODAY</a>
+    </div>
+
+    <!-- Day-of-week headers -->
+    <div class="cal-dow-row">
+        {% for dow in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}
+        <div class="cal-dow">{{ dow }}</div>
+        {% endfor %}
+    </div>
+
+    <!-- Calendar grid -->
+    <div class="cal-grid">
+        {% for week in cal %}
+            {% for day in week %}
+                {% if day == 0 %}
+                <div class="cal-cell empty"></div>
+                {% else %}
+                    {% set is_today = (year == today.year and month == today.month and day == today.day) %}
+                    {% set day_orders = orders_by_day.get(day, []) %}
+                    <div class="cal-cell {% if is_today %}today{% endif %}"
+                         {% if day_orders %}onclick="showDay({{ day }}, {{ year }}, {{ month }})"
+                         style="cursor:pointer"{% endif %}>
+                        <div class="cal-day-num">{{ day }}</div>
+                        {% for order in day_orders[:3] %}
+                        <span class="cal-order-pill status-{{ order[4] }}"
+                              title="{{ order[2] }} — ${{ '%.2f'|format(order[3]) }}">
+                            {{ order[2].split(',')[0][:20] }}
+                        </span>
+                        {% endfor %}
+                        {% if day_orders|length > 3 %}
+                        <span class="cal-more">+{{ day_orders|length - 3 }} more</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Legend -->
+<div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; font-size:0.78rem; font-weight:700; color:var(--brown-mid);">
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#4a90d9;margin-right:4px;vertical-align:middle;"></span>Pending</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#10b981;margin-right:4px;vertical-align:middle;"></span>Complete</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#9ca3af;margin-right:4px;vertical-align:middle;"></span>Cancelled</span>
+</div>
+
+<!-- Day detail modal -->
+<div class="modal-backdrop" id="dayModal" onclick="closeModal(event)">
+    <div class="modal" id="modalContent">
+        <button class="modal-close" onclick="document.getElementById('dayModal').classList.remove('open')">✕</button>
+        <div class="modal-title" id="modalTitle"></div>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+// All orders data keyed by day
+const ordersByDay = {
+    {% for day, orders in orders_by_day.items() %}
+    {{ day }}: [
+        {% for o in orders %}
+        { id: {{ o[0] }}, date: "{{ o[1] }}", name: {{ o[2]|tojson }}, amount: {{ o[3] }}, status: "{{ o[4] }}" },
+        {% endfor %}
+    ],
+    {% endfor %}
+};
+
+const monthName = "{{ month_name }}";
+const year = {{ year }};
+
+function showDay(day, yr, mo) {
+    const orders = ordersByDay[day] || [];
+    const months = ["","January","February","March","April","May","June","July","August","September","October","November","December"];
+    document.getElementById('modalTitle').textContent = months[mo] + ' ' + day + ', ' + yr + '  ·  ' + orders.length + ' order' + (orders.length !== 1 ? 's' : '');
+
+    let html = '';
+    orders.forEach(o => {
+        const statusColors = { pending: '#4a90d9', complete: '#10b981', cancelled: '#9ca3af' };
+        html += `<div class="modal-order-row">
+            <div>
+                <div class="modal-order-name">${o.name}</div>
+                <div class="modal-order-detail">
+                    <span style="display:inline-block;padding:0.1rem 0.5rem;border-radius:10px;background:${statusColors[o.status]};color:#fff;font-size:0.68rem;font-weight:700;">${o.status}</span>
+                    &nbsp;<a href="/edit_order/${o.id}" style="color:var(--rose);font-size:0.75rem;font-weight:700;">Edit</a>
+                </div>
+            </div>
+            <div class="modal-order-amount">$${o.amount.toFixed(2)}</div>
+        </div>`;
+    });
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('dayModal').classList.add('open');
+}
+
+function closeModal(e) {
+    if (e.target.id === 'dayModal') {
+        document.getElementById('dayModal').classList.remove('open');
+    }
+}
+</script>
+
+{% endblock %}

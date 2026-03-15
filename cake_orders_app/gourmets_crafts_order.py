@@ -1,7 +1,8 @@
 import sqlite3
 import os
+import calendar
 from flask import Flask, render_template, request, redirect, url_for, Response, flash
-from datetime import datetime
+from datetime import datetime, date
 from urllib.parse import quote as url_quote
 
 app = Flask(__name__)
@@ -210,6 +211,49 @@ def export_csv():
     output = si.getvalue()
     si.close()
     return Response(output, mimetype='text/csv', headers={'Content-Disposition': 'attachment; filename=orders.csv'})
+
+@app.route('/calendar')
+def order_calendar():
+    today = date.today()
+    year  = int(request.args.get('year',  today.year))
+    month = int(request.args.get('month', today.month))
+
+    # Clamp month to valid range
+    if month < 1:  month = 12; year -= 1
+    if month > 12: month = 1;  year += 1
+
+    # Fetch all orders for this month
+    month_str = f"{year}-{month:02d}"
+    conn = sqlite3.connect('orders.db')
+    c = conn.cursor()
+    c.execute("SELECT id, order_date, customer_address, order_amount, status FROM orders WHERE order_date LIKE ? ORDER BY order_date", (month_str + '%',))
+    rows = c.fetchall()
+    conn.close()
+
+    # Group by day: {day_int: [order, ...]}
+    orders_by_day = {}
+    for row in rows:
+        day = int(row[1].split('-')[2])
+        orders_by_day.setdefault(day, []).append(row)
+
+    # Build calendar grid (list of weeks, each week is 7 day numbers or 0 for padding)
+    cal = calendar.monthcalendar(year, month)
+
+    # Prev / next month
+    prev_month = month - 1 if month > 1 else 12
+    prev_year  = year if month > 1 else year - 1
+    next_month = month + 1 if month < 12 else 1
+    next_year  = year if month < 12 else year + 1
+
+    month_name = calendar.month_name[month]
+
+    return render_template('calendar.html',
+        year=year, month=month, month_name=month_name,
+        cal=cal, orders_by_day=orders_by_day,
+        today=today,
+        prev_year=prev_year, prev_month=prev_month,
+        next_year=next_year, next_month=next_month)
+
 
 if __name__ == '__main__':
     debug = os.environ.get('FLASK_DEBUG', 'false').lower() == 'true'
