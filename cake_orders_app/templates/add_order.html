@@ -1,12 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Add New Order</h2>
-<form method="post">
-    Order Date (YYYY-MM-DD): <input type="date" name="order_date" required><br><br>
-    Customer Address: <textarea name="customer_address" required></textarea><br><br>
-    Phone Number: <input type="text" name="phone_number" required><br><br>
-    Order Details: <textarea name="order_details" required></textarea><br><br>
-    Order Amount: <input type="number" step="0.01" name="order_amount" required><br><br>
-    <input type="submit" value="Add Order">
-</form>
+
+<div class="card" style="max-width:620px; margin:0 auto;">
+    <h2 class="page-title">New Cake Order</h2>
+    <p class="page-subtitle">Fill in the details below to record a new order.</p>
+    <hr class="divider">
+
+    <form method="post">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="order_date">Order Date</label>
+                <input type="date" id="order_date" name="order_date" required>
+            </div>
+            <div class="form-group">
+                <label for="order_amount">Order Amount ($)</label>
+                <input type="number" id="order_amount" name="order_amount" step="0.01" min="0" placeholder="0.00" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <input type="tel" id="phone_number" name="phone_number" placeholder="+1 (555) 000-0000" required>
+        </div>
+
+        <div class="form-group">
+            <label for="customer_address">Customer Address</label>
+            <textarea id="customer_address" name="customer_address" placeholder="Street, City, State, ZIP" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="order_details">Order Details</label>
+            <textarea id="order_details" name="order_details" style="min-height:110px;" placeholder="Cake flavour, size, decorations, special requests…" required></textarea>
+        </div>
+
+        <div style="display:flex; gap:0.8rem; align-items:center; margin-top:1.5rem; flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary">🎂 &nbsp;Save Order</button>
+            <a href="/" class="btn btn-outline">Cancel</a>
+        </div>
+
+    </form>
+</div>
+
 {% endblock %}

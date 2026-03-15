@@ -1,4 +1,50 @@
 {% extends "base.html" %}
 {% block content %}
-<p>Welcome to the Cake Orders App. Use the menu to add orders or view reports.</p>
+
+<div style="text-align:center; padding: 3rem 1rem 2.5rem;">
+    <div style="font-size:3.5rem; margin-bottom:1rem;">🍰</div>
+    <h1 style="font-family:'Playfair Display',serif; font-size:2.6rem; font-weight:700; color:var(--chocolate); margin-bottom:0.6rem; line-height:1.2;">
+        Welcome Back!
+    </h1>
+    <p style="color:var(--brown-mid); font-size:1.05rem; font-weight:300; max-width:480px; margin:0 auto 2.5rem;">
+        Manage your cake orders, track daily sales, and keep your bakery running beautifully.
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.2rem; max-width:800px; margin:0 auto;">
+
+        <a href="/add_order" style="text-decoration:none;">
+            <div class="card" style="text-align:center; padding:2rem 1.5rem; border-top:4px solid var(--rose); transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 10px 30px rgba(74,44,26,0.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div style="font-size:2.2rem; margin-bottom:0.8rem;">📝</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:var(--chocolate); margin-bottom:0.4rem;">New Order</div>
+                <div style="font-size:0.8rem; color:var(--brown-mid); font-weight:300;">Add a customer cake order</div>
+            </div>
+        </a>
+
+        <a href="/orders" style="text-decoration:none;">
+            <div class="card" style="text-align:center; padding:2rem 1.5rem; border-top:4px solid var(--gold); transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 10px 30px rgba(74,44,26,0.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div style="font-size:2.2rem; margin-bottom:0.8rem;">📋</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:var(--chocolate); margin-bottom:0.4rem;">All Orders</div>
+                <div style="font-size:0.8rem; color:var(--brown-mid); font-weight:300;">View every order placed</div>
+            </div>
+        </a>
+
+        <a href="/reports" style="text-decoration:none;">
+            <div class="card" style="text-align:center; padding:2rem 1.5rem; border-top:4px solid var(--brown-mid); transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 10px 30px rgba(74,44,26,0.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div style="font-size:2.2rem; margin-bottom:0.8rem;">📊</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:var(--chocolate); margin-bottom:0.4rem;">Reports</div>
+                <div style="font-size:0.8rem; color:var(--brown-mid); font-weight:300;">Sales summaries & exports</div>
+            </div>
+        </a>
+
+        <a href="/total_sales" style="text-decoration:none;">
+            <div class="card" style="text-align:center; padding:2rem 1.5rem; border-top:4px solid #10b981; transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 10px 30px rgba(74,44,26,0.15)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div style="font-size:2.2rem; margin-bottom:0.8rem;">💰</div>
+                <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:var(--chocolate); margin-bottom:0.4rem;">Total Sales</div>
+                <div style="font-size:0.8rem; color:var(--brown-mid); font-weight:300;">Your revenue at a glance</div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
 {% endblock %}

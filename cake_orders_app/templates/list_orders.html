@@ -1,24 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>All Orders</h2>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Order Date</th>
-        <th>Customer Address</th>
-        <th>Phone Number</th>
-        <th>Order Details</th>
-        <th>Order Amount</th>
-    </tr>
-    {% for order in orders %}
-    <tr>
-        <td>{{ order[0] }}</td>
-        <td>{{ order[1] }}</td>
-        <td>{{ order[2] }}</td>
-        <td>{{ order[3] }}</td>
-        <td>{{ order[4] }}</td>
-        <td>${{ "%.2f"|format(order[5]) }}</td>
-    </tr>
-    {% endfor %}
-</table>
+
+<div class="card">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:0.4rem;">
+        <div>
+            <h2 class="page-title">All Orders</h2>
+            <p class="page-subtitle">A complete record of every cake order.</p>
+        </div>
+        <a href="/add_order" class="btn btn-primary" style="align-self:center;">+ New Order</a>
+    </div>
+    <hr class="divider">
+
+    {% if orders %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Details</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td style="color:var(--brown-mid); font-weight:700;">{{ order[0] }}</td>
+                    <td style="white-space:nowrap;">{{ order[1] }}</td>
+                    <td>{{ order[2] }}</td>
+                    <td style="white-space:nowrap;">{{ order[3] }}</td>
+                    <td>{{ order[4] }}</td>
+                    <td class="amount">${{ "%.2f"|format(order[5]) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem 1rem; color:var(--brown-mid);">
+        <div style="font-size:3rem; margin-bottom:1rem;">🎂</div>
+        <p style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.5rem;">No orders yet</p>
+        <p style="font-size:0.9rem; font-weight:300;">
+            <a href="/add_order" style="color:var(--rose); font-weight:700;">Add your first order</a> to get started.
+        </p>
+    </div>
+    {% endif %}
+</div>
+
 {% endblock %}

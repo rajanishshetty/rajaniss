@@ -1,17 +1,434 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Cake Orders App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Home Bakery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream:       #fdf6f0;
+            --blush:       #f5e6d8;
+            --rose:        #c97b63;
+            --rose-dark:   #a65c46;
+            --chocolate:   #4a2c1a;
+            --brown-mid:   #7a4f3a;
+            --gold:        #d4a96a;
+            --gold-light:  #f0d9b5;
+            --white:       #ffffff;
+            --shadow:      0 4px 20px rgba(74,44,26,0.10);
+            --shadow-sm:   0 2px 8px rgba(74,44,26,0.08);
+            --radius:      12px;
+            --radius-sm:   8px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--cream);
+            color: var(--chocolate);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Header ── */
+        header {
+            background: var(--white);
+            border-bottom: 2px solid var(--gold-light);
+            padding: 0 2rem;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--chocolate);
+        }
+
+        .brand-tagline {
+            font-size: 0.7rem;
+            font-weight: 300;
+            color: var(--rose);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* ── Nav ── */
+        nav {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--brown-mid);
+            padding: 0.45rem 0.9rem;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--blush);
+            color: var(--rose-dark);
+        }
+
+        nav a.active {
+            background: var(--rose);
+            color: var(--white);
+        }
+
+        /* ── Main ── */
+        main {
+            flex: 1;
+            max-width: 1100px;
+            width: 100%;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ── Cards & Panels ── */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem 2.5rem;
+        }
+
+        /* ── Page heading ── */
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--chocolate);
+            margin-bottom: 0.4rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.9rem;
+            color: var(--brown-mid);
+            margin-bottom: 1.8rem;
+            font-weight: 300;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            border: none;
+            margin-bottom: 1.8rem;
+            border-radius: 2px;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.4rem;
+            border-radius: 25px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+        }
+
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(201,123,99,0.30); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-primary {
+            background: var(--rose);
+            color: var(--white);
+        }
+
+        .btn-primary:hover { background: var(--rose-dark); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--rose);
+            border: 2px solid var(--rose);
+        }
+
+        .btn-outline:hover { background: var(--blush); }
+
+        /* ── Forms ── */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--brown-mid);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1.5px solid var(--gold-light);
+            border-radius: var(--radius-sm);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            color: var(--chocolate);
+            background: var(--cream);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--rose);
+            box-shadow: 0 0 0 3px rgba(201,123,99,0.15);
+            background: var(--white);
+        }
+
+        .form-group textarea { min-height: 90px; resize: vertical; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* ── Tables ── */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead tr {
+            background: linear-gradient(135deg, var(--chocolate), var(--brown-mid));
+            color: var(--white);
+        }
+
+        thead th {
+            padding: 0.85rem 1rem;
+            text-align: left;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        tbody tr { border-bottom: 1px solid var(--blush); transition: background 0.15s; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: var(--blush); }
+
+        tbody td {
+            padding: 0.8rem 1rem;
+            color: var(--chocolate);
+            vertical-align: top;
+        }
+
+        tbody td.amount {
+            font-weight: 700;
+            color: var(--rose-dark);
+            white-space: nowrap;
+        }
+
+        /* ── Stat badge ── */
+        .stat-block {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+            color: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        /* ── Report cards grid ── */
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .report-card {
+            background: var(--white);
+            border: 1.5px solid var(--gold-light);
+            border-radius: var(--radius);
+            padding: 1.4rem 1.2rem;
+            text-decoration: none;
+            color: var(--chocolate);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+
+        .report-card:hover {
+            border-color: var(--rose);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .report-card-icon { font-size: 1.6rem; }
+
+        .report-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--chocolate);
+        }
+
+        .report-card-desc {
+            font-size: 0.78rem;
+            color: var(--brown-mid);
+            font-weight: 300;
+        }
+
+        /* ── Flash messages ── */
+        .alert {
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.78rem;
+            color: var(--brown-mid);
+            font-weight: 300;
+            border-top: 1px solid var(--gold-light);
+            background: var(--white);
+            letter-spacing: 0.05em;
+        }
+
+        footer span { color: var(--rose); }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .header-inner { height: auto; padding: 0.8rem 0; flex-direction: column; gap: 0.6rem; }
+            nav { flex-wrap: wrap; justify-content: center; }
+            main { margin: 1.5rem auto; }
+            .card { padding: 1.4rem 1.2rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .stat-value { font-size: 2rem; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Cake Orders Management</h1>
-    <nav>
-        <a href="/">Home</a> |
-        <a href="/add_order">Add Order</a> |
-        <a href="/orders">List Orders</a> |
-        <a href="/reports">Reports</a>
-    </nav>
-    <br>
+
+<header>
+    <div class="header-inner">
+        <a class="brand" href="/">
+            <span class="brand-icon">🎂</span>
+            <span class="brand-text">
+                <span class="brand-name">Sweet Home Bakery</span>
+                <span class="brand-tagline">Handcrafted with love</span>
+            </span>
+        </a>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/add_order">New Order</a>
+            <a href="/orders">Orders</a>
+            <a href="/reports">Reports</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>Made with <span>♥</span> &nbsp;·&nbsp; Sweet Home Bakery &nbsp;·&nbsp; {{ now.year if now else '2026' }}</p>
+</footer>
+
 </body>
 </html>

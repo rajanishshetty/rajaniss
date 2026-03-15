@@ -1,11 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Reports</h2>
-<ul>
-    <li><a href="/total_sales">Total Sales Amount</a></li>
-    <li><a href="/orders_by_date">Orders by Date Range</a></li>
-    <li><a href="/daily_sales">Daily Sales Summary</a></li>
-    <li><a href="/monthly_sales">Monthly Sales Summary</a></li>
-    <li><a href="/export_csv">Export Orders to CSV</a></li>
-</ul>
+
+<div class="card">
+    <h2 class="page-title">Reports</h2>
+    <p class="page-subtitle">Explore your bakery's performance and export data.</p>
+    <hr class="divider">
+
+    <div class="report-grid">
+
+        <a href="/total_sales" class="report-card">
+            <span class="report-card-icon">💰</span>
+            <span class="report-card-title">Total Sales</span>
+            <span class="report-card-desc">Lifetime revenue summary</span>
+        </a>
+
+        <a href="/orders_by_date" class="report-card">
+            <span class="report-card-icon">📅</span>
+            <span class="report-card-title">By Date Range</span>
+            <span class="report-card-desc">Filter orders between dates</span>
+        </a>
+
+        <a href="/daily_sales" class="report-card">
+            <span class="report-card-icon">📈</span>
+            <span class="report-card-title">Daily Sales</span>
+            <span class="report-card-desc">Day-by-day breakdown</span>
+        </a>
+
+        <a href="/monthly_sales" class="report-card">
+            <span class="report-card-icon">🗓️</span>
+            <span class="report-card-title">Monthly Sales</span>
+            <span class="report-card-desc">Month-by-month summary</span>
+        </a>
+
+        <a href="/export_csv" class="report-card">
+            <span class="report-card-icon">📥</span>
+            <span class="report-card-title">Export CSV</span>
+            <span class="report-card-desc">Download all orders as CSV</span>
+        </a>
+
+    </div>
+</div>
+
 {% endblock %}

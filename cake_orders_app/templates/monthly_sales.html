@@ -1,16 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Monthly Sales Summary</h2>
-<table border="1">
-    <tr>
-        <th>Month</th>
-        <th>Total Sales</th>
-    </tr>
-    {% for sale in sales %}
-    <tr>
-        <td>{{ sale[0] }}</td>
-        <td>${{ "%.2f"|format(sale[1]) }}</td>
-    </tr>
-    {% endfor %}
-</table>
+
+<div class="card">
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:0.4rem;">
+        <div>
+            <h2 class="page-title">Monthly Sales</h2>
+            <p class="page-subtitle">Revenue grouped by month.</p>
+        </div>
+        <a href="/reports" class="btn btn-outline" style="align-self:center;">← Reports</a>
+    </div>
+    <hr class="divider">
+
+    {% if sales %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Sales</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                <tr>
+                    <td>{{ sale[0] }}</td>
+                    <td class="amount">${{ "%.2f"|format(sale[1]) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div style="text-align:center; padding:3rem 1rem; color:var(--brown-mid);">
+        <div style="font-size:2.5rem; margin-bottom:0.8rem;">🗓️</div>
+        <p style="font-size:0.95rem; font-weight:300;">No monthly data available yet.</p>
+    </div>
+    {% endif %}
+</div>
+
 {% endblock %}
